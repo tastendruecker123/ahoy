@@ -190,7 +190,7 @@ void app::loop(void) {
     if(checkTicker(&mTicker, 1000)) {
         if((++mMqttTicker >= mMqttInterval) && (mMqttInterval != 0xffff) && mMqttActive) {
             mMqttTicker = 0;
-            mMqtt.isConnected(true);
+            mMqtt.isConnected(true); // really needed? See comment from HorstG-57 #176
             char topic[30], val[10];
             for(uint8_t id = 0; id < mSys->getNumInverters(); id++) {
                 Inverter<> *iv = mSys->getInverterByPos(id);
@@ -855,7 +855,6 @@ void app::loadEEpconfig(void) {
                     // it is "doppelt-gemoppelt" because the inverter shall remember the setting if the dtu makes a power cycle / reboot
                     if (iv->powerLimit[0] != 0xffff) { 
                         iv->devControlCmd = ActivePowerContr; // set active power limit
-                        iv->devControlRequest = true; // set to true to update the active power limit from setup html page
                         if (iv->powerLimit[1] & 0x0001){
                             DPRINTLN(DBG_INFO, F("add inverter: ") + String(name) + ", SN: " + String(invSerial, HEX) + ", Power Limit: " + String(iv->powerLimit[0]) + " in %");    
                         } else {

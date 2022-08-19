@@ -79,9 +79,11 @@ class mqtt {
         void reconnect(void) {
             DPRINTLN(DBG_DEBUG, F("mqtt.h:reconnect"));
             DPRINTLN(DBG_DEBUG, F("MQTT mClient->_state ") + String(mClient->state()) );
+
             #ifdef ESP8266
                 DPRINTLN(DBG_DEBUG, F("WIFI mEspClient.status ") + String(mEspClient.status()) );
             #endif
+
             boolean resub = false;
             if(!mClient->connected()) {
                 if(strlen(mDevName) > 0) {
